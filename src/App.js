@@ -1,24 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+export const intialState = 'Initial State';
+export const newState = 'Button Clicked~';
+export const initialHit = 0;
+
 function App() {
+  const [hits, setHits] = React.useState(initialHit);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <button data-testid='app-button' onClick={() => setHits(hits + 1)}>
+        Change state?
+      </button>
+      <p id='viewContainer'>
+        Seems you hit this button&nbsp;
+          <span data-testid='hits'>{hits}</span>
+        &nbsp;times.
+      </p>
     </div>
   );
 }
