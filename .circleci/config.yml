@@ -38,7 +38,13 @@ jobs:
   show_ubuntu_whois:
     executor: ubuntu_machine_executor
     steps:
-      - run: whois
+      - run:
+        command: |
+          sudo apt-get install python-software-properties
+          sudo add-apt-repository ppa:nathan-renniewaldock/ppa
+          sudo apt-get update
+          sudo apt-get install whois
+          whois
   build:
     executor: node_executor
     working_directory: ~/repo
