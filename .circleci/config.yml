@@ -29,9 +29,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - persist_to_workspace:
-        root: ~/repo
-        paths:
-          - config/share_key
+          root: ~/repo
+          paths:
+            - config/share_key
       - run: yarn test
 
   deploy:
@@ -42,7 +42,7 @@ jobs:
       - checkout
       # To test persist_to_workspace is actually working
       - attach_to_workspace:
-        at: /tmp/workspace
+          at: /tmp/workspace
       # ...and see it's attached well
       - run: cat /tmp/workspace/share_key
       - heroku/install # Runs the heroku install command, if necessary.
