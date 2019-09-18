@@ -44,7 +44,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       # ...and see it's attached well
-      - run: cat /tmp/workspace/share_key
+      - run: ls /tmp/workspace
       - heroku/install # Runs the heroku install command, if necessary.
       - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
           only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
