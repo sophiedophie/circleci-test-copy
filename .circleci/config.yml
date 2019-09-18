@@ -41,7 +41,7 @@ jobs:
     steps:
       - checkout
       # To test persist_to_workspace is actually working
-      - attach_to_workspace:
+      - attach_workspace:
           at: /tmp/workspace
       # ...and see it's attached well
       - run: cat /tmp/workspace/share_key
