@@ -1,17 +1,17 @@
 version: 2.0
-orbs:
-  heroku: circleci/heroku@0.0.8
-executors:
-  macos_executor:
-    macos:
-      xcode: "10.0.0"
-  ubuntu_machine_executor:
-    machine:
-      image: ubuntu-1604:201903-01
-      docker_layer_caching: true
-  node_executor:
-    docker:
-      - image: circleci/node:11.1.0
+# orbs:
+#   heroku: circleci/heroku@0.0.8
+# executors:
+#   macos_executor:
+#     macos:
+#       xcode: "10.0.0"
+#   ubuntu_machine_executor:
+#     machine:
+#       image: ubuntu-1604:201903-01
+#       docker_layer_caching: true
+#   node_executor:
+#     docker:
+#       - image: circleci/node:11.1.0
 
 workflows:
   version: 2
@@ -45,7 +45,10 @@ jobs:
           command: |
             echo "hello world"
   splitting-test:
-    executor: node_executor
+    # executor: node_executor
+    # for 2.0 config
+    docker:
+      - image: circleci/node:11.1.0
     working_directory: ~/repo
     steps:
       - checkout
