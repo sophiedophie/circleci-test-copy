@@ -41,6 +41,13 @@ jobs:
       - run:
           command: |
             echo "hello world"
+  splitting-test:
+    executor: node_executor
+    steps:
+      - checkout
+      - run:
+          command: |
+            circleci tests split < ./src/App.test.js
   build:
     executor: node_executor
     working_directory: ~/repo
