@@ -1,52 +1,60 @@
-version: 2.0
-# orbs:
-#   heroku: circleci/heroku@0.0.8
-# executors:
-#   macos_executor:
-#     macos:
-#       xcode: "10.0.0"
-#   ubuntu_machine_executor:
-#     machine:
-#       image: ubuntu-1604:201903-01
-#       docker_layer_caching: true
-#   node_executor:
-#     docker:
-#       - image: circleci/node:11.1.0
-
+version: 2.1
+orbs:
+  heroku: circleci/heroku@0.0.8
+executors:
+  macos_executor:
+    macos:
+      xcode: "10.0.0"
+  ubuntu_machine_executor:
+    machine:
+      image: ubuntu-1604:201903-01
+      docker_layer_caching: true
+  node_executor:
+    docker:
+      - image: circleci/node:11.1.0
+parameters:
+  macos:
+    type: boolean
+    default: false
+  ubuntu_machine:
+    type: boolean
+    default: false
 workflows:
   version: 2
-  # macos:
-  #   jobs:
-  #     - show_xcode_version
-  # ubuntu_machine:
-  #   jobs:
-  #     - show_ubuntu_whois
+  macos:
+    when: << pipeline.parameters.macos >>
+    jobs:
+      - show_xcode_version
+  ubuntu_machine:
+    when: << pipeline.parameters.ubuntu_machine >>
+    jobs:
+      - show_ubuntu_whois
   build_and_deploy:
     jobs:
       - splitting-test
-      # - build:
-      #     requires:
-      #       - splitting-test
-      # - deploy:
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: master
+      - build:
+          requires:
+            - splitting-test
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
 jobs:
-  # show_xcode_version:
-  #   executor: macos_executor
-  #   steps:
-  #     - run: xcodebuild -version
-  # show_ubuntu_whois:
-  #   executor: ubuntu_machine_executor
-  #   steps:
-  #     - run:
-  #         command: |
-  #           echo "hello world"
+  show_xcode_version:
+    executor: macos_executor
+    steps:
+      - run: xcodebuild -version
+  show_ubuntu_whois:
+    executor: ubuntu_machine_executor
+    steps:
+      - run:
+          command: |
+            echo "hello world"
   splitting-test:
-    # executor: node_executor
-    # for 2.0 config
+    executor: node_executor
+    for 2.0 config
     docker:
       - image: circleci/node:11.1.0
     working_directory: ~/repo
@@ -59,39 +67,39 @@ jobs:
             TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             npm run test ${TESTFILES}
-  # build:
-  #   executor: node_executor
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker:
-  #         docker_layer_caching: true
-  #     - restore_cache:
-  #         keys:
-  #           - v1-dependencies-{{ checksum "package.json" }}
-  #           - v1-dependencies-
-  #     - run: npm install
-  #     - save_cache:
-  #         paths:
-  #           - node_modules
-  #         key: v1-dependencies-{{ checksum "package.json" }}
-  #     - persist_to_workspace:
-  #         root: ~/repo
-  #         paths:
-  #           - config/share_key
-  #     - run: npm run test
+  build:
+    executor: node_executor
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - config/share_key
+      - run: npm run test
 
-  # deploy:
-  #   docker:
-  #     - image: buildpack-deps:trusty
-  #   executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
-  #   steps:
-  #     - checkout
-  #     # To test persist_to_workspace is actually working
-  #     - attach_workspace:
-  #         at: /tmp/workspace
-  #     # ...and see it's attached well
-  #     - run: ls /tmp/workspace
-  #     - heroku/install # Runs the heroku install command, if necessary.
-  #     - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
-  #         only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
+    steps:
+      - checkout
+      # To test persist_to_workspace is actually working
+      - attach_workspace:
+          at: /tmp/workspace
+      # ...and see it's attached well
+      - run: ls /tmp/workspace
+      - heroku/install # Runs the heroku install command, if necessary.
+      - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
+          only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
