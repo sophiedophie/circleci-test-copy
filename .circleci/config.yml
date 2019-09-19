@@ -34,16 +34,16 @@ workflows:
       #       branches:
       #         only: master
 jobs:
-  show_xcode_version:
-    executor: macos_executor
-    steps:
-      - run: xcodebuild -version
-  show_ubuntu_whois:
-    executor: ubuntu_machine_executor
-    steps:
-      - run:
-          command: |
-            echo "hello world"
+  # show_xcode_version:
+  #   executor: macos_executor
+  #   steps:
+  #     - run: xcodebuild -version
+  # show_ubuntu_whois:
+  #   executor: ubuntu_machine_executor
+  #   steps:
+  #     - run:
+  #         command: |
+  #           echo "hello world"
   splitting-test:
     # executor: node_executor
     # for 2.0 config
@@ -59,27 +59,27 @@ jobs:
             TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             npm run test ${TESTFILES}
-  build:
-    executor: node_executor
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - persist_to_workspace:
-          root: ~/repo
-          paths:
-            - config/share_key
-      - run: npm run test
+  # build:
+  #   executor: node_executor
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker:
+  #         docker_layer_caching: true
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "package.json" }}
+  #           - v1-dependencies-
+  #     - run: npm install
+  #     - save_cache:
+  #         paths:
+  #           - node_modules
+  #         key: v1-dependencies-{{ checksum "package.json" }}
+  #     - persist_to_workspace:
+  #         root: ~/repo
+  #         paths:
+  #           - config/share_key
+  #     - run: npm run test
 
   deploy:
     docker:
