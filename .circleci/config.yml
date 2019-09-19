@@ -50,7 +50,7 @@ jobs:
       - checkout
       - run:
           command: |
-            circleci tests split < ./src/App.test.js
+            circleci tests split < ./src
   build:
     executor: node_executor
     working_directory: ~/repo
