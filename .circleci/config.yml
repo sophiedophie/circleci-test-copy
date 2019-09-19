@@ -15,24 +15,24 @@ executors:
 
 workflows:
   version: 2
-  macos:
-    jobs:
-      - show_xcode_version
-  ubuntu_machine:
-    jobs:
-      - show_ubuntu_whois
+  # macos:
+  #   jobs:
+  #     - show_xcode_version
+  # ubuntu_machine:
+  #   jobs:
+  #     - show_ubuntu_whois
   build_and_deploy:
     jobs:
       - splitting-test
-      - build:
-          requires:
-            - splitting-test
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+      # - build:
+      #     requires:
+      #       - splitting-test
+      # - deploy:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only: master
 jobs:
   show_xcode_version:
     executor: macos_executor
@@ -52,6 +52,7 @@ jobs:
       - run:
           name: Run Jest test by splitting
           command: |
+            npm install
             TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             npm run test ${TESTFILES}
