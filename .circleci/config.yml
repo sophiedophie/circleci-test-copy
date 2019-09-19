@@ -41,8 +41,7 @@ jobs:
       - run:
           command: |
             sudo apt-get update
-            sudo apt-get install whois
-            whois google.com
+            sudo apt list --installed
   build:
     executor: node_executor
     working_directory: ~/repo
