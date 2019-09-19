@@ -40,8 +40,7 @@ jobs:
     steps:
       - run:
           command: |
-            sudo apt-get update
-            sudo apt list --installed
+            echo "hello world"
   build:
     executor: node_executor
     working_directory: ~/repo
