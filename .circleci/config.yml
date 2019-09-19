@@ -46,12 +46,13 @@ jobs:
             echo "hello world"
   splitting-test:
     executor: node_executor
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
           name: Run Jest test by splitting
           command: |
-            TESTFILES=$(circleci tests glob "*.test.js" | circleci tests split --split-by=timings)
+            TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             npm run test ${TESTFILES}
   build:
