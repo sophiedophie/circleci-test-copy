@@ -23,7 +23,10 @@ workflows:
       - show_ubuntu_whois
   build_and_deploy:
     jobs:
-      - build
+      - splitting-test
+      - build:
+          requires:
+            - splitting-test
       - deploy:
           requires:
             - build
