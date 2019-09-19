@@ -81,17 +81,17 @@ jobs:
   #           - config/share_key
   #     - run: npm run test
 
-  deploy:
-    docker:
-      - image: buildpack-deps:trusty
-    executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
-    steps:
-      - checkout
-      # To test persist_to_workspace is actually working
-      - attach_workspace:
-          at: /tmp/workspace
-      # ...and see it's attached well
-      - run: ls /tmp/workspace
-      - heroku/install # Runs the heroku install command, if necessary.
-      - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
-          only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
+  # deploy:
+  #   docker:
+  #     - image: buildpack-deps:trusty
+  #   executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
+  #   steps:
+  #     - checkout
+  #     # To test persist_to_workspace is actually working
+  #     - attach_workspace:
+  #         at: /tmp/workspace
+  #     # ...and see it's attached well
+  #     - run: ls /tmp/workspace
+  #     - heroku/install # Runs the heroku install command, if necessary.
+  #     - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
+  #         only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
