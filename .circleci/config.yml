@@ -54,7 +54,6 @@ jobs:
             echo "hello world"
   splitting-test:
     executor: node_executor
-    for 2.0 config
     docker:
       - image: circleci/node:11.1.0
     working_directory: ~/repo
