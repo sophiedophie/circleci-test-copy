@@ -42,12 +42,14 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install whois
-            whois
+            whois google.com
   build:
     executor: node_executor
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
