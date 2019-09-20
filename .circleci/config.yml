@@ -59,6 +59,7 @@ jobs:
     environment:
       - DOCKER_BUILDKIT: '1'
     steps:
+      - checkout
       - run:
           command: |
             echo "hello world"
