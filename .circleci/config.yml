@@ -64,7 +64,7 @@ jobs:
           command: |
             echo "hello world"
             docker version
-            docker build --secret id=mysite.key,src=secret -t myimage .
+            docker build -t myimage .
   splitting-test:
     executor: node_executor
     docker:
