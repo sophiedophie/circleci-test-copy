@@ -62,6 +62,7 @@ jobs:
       - run:
           command: |
             echo "hello world"
+            docker version
   splitting-test:
     executor: node_executor
     docker:
