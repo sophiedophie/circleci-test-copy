@@ -63,8 +63,10 @@ jobs:
       - run:
           command: |
             echo "hello world"
+            echo "{ \"experimental\": true }"  | sudo tee /etc/docker/daemon.json
+            sudo service docker restart
             docker version
-            docker build --experimental -t myimage .
+            docker build -t myimage .
   splitting-test:
     executor: node_executor
     docker:
