@@ -9,8 +9,6 @@ executors:
     machine:
       image: ubuntu-1604:201903-01
       docker_layer_caching: true
-      environment:
-        - DOCKER_BUILDKIT: '1'
   node_executor:
     docker:
       - image: circleci/node:11.1.0
@@ -58,6 +56,8 @@ jobs:
             echo ${password}
   show_ubuntu_whois:
     executor: ubuntu_machine_executor
+    environment:
+      - DOCKER_BUILDKIT: '1'
     steps:
       - run:
           command: |
