@@ -24,7 +24,8 @@ workflows:
   macos:
     when: << pipeline.parameters.macos >>
     jobs:
-      - show_xcode_version
+      - show_xcode_version:
+          context: test-context
   ubuntu_machine:
     when: << pipeline.parameters.ubuntu_machine >>
     jobs:
@@ -45,7 +46,10 @@ jobs:
   show_xcode_version:
     executor: macos_executor
     steps:
-      - run: xcodebuild -version
+      - run:
+          command: |
+            xcodebuild -version
+            echo ${password}
   show_ubuntu_whois:
     executor: ubuntu_machine_executor
     steps:
