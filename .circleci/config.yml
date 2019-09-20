@@ -7,7 +7,7 @@ executors:
       xcode: "10.0.0"
   ubuntu_machine_executor:
     machine:
-      image: ubuntu-1604:201903-01
+      image: circleci/classic:201808-01
       docker_layer_caching: true
   node_executor:
     docker:
