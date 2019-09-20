@@ -64,7 +64,7 @@ jobs:
           command: |
             echo "hello world"
             docker version
-            docker build -t myimage .
+            docker build --experimental -t myimage .
   splitting-test:
     executor: node_executor
     docker:
