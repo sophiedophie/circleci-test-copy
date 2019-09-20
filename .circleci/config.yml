@@ -15,8 +15,11 @@ executors:
 parameters:
   macos:
     type: boolean
-    default: false
+    default: true
   ubuntu_machine:
+    type: boolean
+    default: false
+  build_and_deploy:
     type: boolean
     default: false
 workflows:
@@ -31,6 +34,7 @@ workflows:
     jobs:
       - show_ubuntu_whois
   build_and_deploy:
+    when: << pipeline.parameters.build_and_deploy >>
     jobs:
       - splitting-test
       - build:
