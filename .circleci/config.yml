@@ -4,7 +4,7 @@ orbs:
 executors:
   macos_executor:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.2.1"
   ubuntu_machine_executor:
     machine:
       image: circleci/classic:201808-01
@@ -51,6 +51,10 @@ jobs:
     executor: macos_executor
     shell: /bin/bash --login -eo pipefail
     steps:
+      - restore_cache:
+          key: homebrew
+      - attach_workspace:
+          at: ./
       - run:
           command: |
             xcodebuild -version
