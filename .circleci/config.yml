@@ -54,6 +54,10 @@ jobs:
           command: |
             xcodebuild -version
             echo ${password}
+      - run:
+          command: brew update
+      - run:
+          command: brew install Gradle
   show_ubuntu_whois:
     executor: ubuntu_machine_executor
     environment:
