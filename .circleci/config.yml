@@ -49,6 +49,7 @@ workflows:
 jobs:
   show_xcode_version:
     executor: macos_executor
+    shell: /bin/bash --login -eo pipefail
     steps:
       - run:
           command: |
