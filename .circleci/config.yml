@@ -4,7 +4,7 @@ orbs:
 executors:
   macos_executor:
     macos:
-      xcode: "10.2.1"
+      xcode: "10.2.0"
   ubuntu_machine_executor:
     machine:
       image: circleci/classic:201808-01
