@@ -15,10 +15,10 @@ executors:
 parameters:
   macos:
     type: boolean
-    default: false
+    default: true
   ubuntu_machine:
     type: boolean
-    default: true
+    default: false
   build_and_deploy:
     type: boolean
     default: false
