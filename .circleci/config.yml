@@ -110,8 +110,8 @@ jobs:
           root: ~/repo
           paths:
             - config/share_key
-      - store_test_result:
-          path: test_result
+      - store_test_results:
+          path: test_results
       - run: npm run test
 
   deploy:
