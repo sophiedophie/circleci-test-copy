@@ -15,13 +15,13 @@ executors:
 parameters:
   macos:
     type: boolean
-    default: true
+    default: false
   ubuntu_machine:
     type: boolean
     default: false
   build_and_deploy:
     type: boolean
-    default: false
+    default: true
 workflows:
   version: 2
   macos:
