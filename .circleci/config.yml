@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 orbs:
   heroku: circleci/heroku@0.0.8
 executors:
@@ -25,16 +25,16 @@ parameters:
 workflows:
   version: 2
   macos:
-    when: << pipeline.parameters.macos >>
+    # when: << pipeline.parameters.macos >>
     jobs:
       - show_xcode_version:
           context: test-context
   ubuntu_machine:
-    when: << pipeline.parameters.ubuntu_machine >>
+    # when: << pipeline.parameters.ubuntu_machine >>
     jobs:
       - show_ubuntu_whois
   build_and_deploy:
-    when: << pipeline.parameters.build_and_deploy >>
+    # when: << pipeline.parameters.build_and_deploy >>
     jobs:
       - splitting-test
       - build:
