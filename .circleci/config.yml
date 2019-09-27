@@ -18,18 +18,12 @@ workflows:
   ubuntu_machine:
     jobs:
       - show_ubuntu_whois
-  build_and_deploy:
+  test:
     jobs:
       - splitting-test
-      - build:
+      - test:
           requires:
             - splitting-test
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
 jobs:
   show_xcode_version:
     macos:
@@ -76,7 +70,7 @@ jobs:
             TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
             echo ${TESTFILES}
             npm run test ${TESTFILES}
-  build:
+  test:
     docker:
       - image: circleci/node:11.1.0
     working_directory: ~/repo
@@ -100,18 +94,3 @@ jobs:
       - store_test_results:
           path: test_results
       - run: npm run test
-
-  deploy:
-    docker:
-      - image: buildpack-deps:trusty
-    executor: heroku/default # Uses the basic buildpack-deps image, which has the prerequisites for installing heroku's CLI.
-    steps:
-      - checkout
-      # To test persist_to_workspace is actually working
-      - attach_workspace:
-          at: /tmp/workspace
-      # ...and see it's attached well
-      - run: ls /tmp/workspace
-      - heroku/install # Runs the heroku install command, if necessary.
-      - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
-          only-branch: master # If you specify an only-branch, the deploy will not occur for any other branch.
