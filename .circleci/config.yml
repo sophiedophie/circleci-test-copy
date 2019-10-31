@@ -1,95 +1,30 @@
-version: 2.0
-parameters:
-  macos:
-    type: boolean
-    default: false
-  ubuntu_machine:
-    type: boolean
-    default: false
-  build_and_deploy:
-    type: boolean
-    default: true
+version: 2.1
+
+# What I want to be able to do is
+# call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\VsDevCmd.bat\" -host_arch=amd64 -arch=amd64
+# Which works fine on azure pipelines and over ssh
+
+orbs:
+  win: circleci/windows@1.0.0
+
+jobs:
+  installation:
+    docker:
+      - image: windows-server-2019-vs2019:edge
+    steps:
+      - run:
+          name: install dotnet
+          command: |
+            choco install powershell-core
+            $PSVersionTable
+      - run:
+          name: install dotnet
+          command: |
+            choco install dotnetcore-sdk
+            dotnet --info
+
 workflows:
   version: 2
-  macos:
+  build_and_test_all:
     jobs:
-      - show_xcode_version:
-          context: test-context
-  ubuntu_machine:
-    jobs:
-      - show_ubuntu_whois
-  test:
-    jobs:
-      - splitting-test
-      - test:
-          requires:
-            - splitting-test
-jobs:
-  show_xcode_version:
-    macos:
-      xcode: "10.2.0"
-    shell: /bin/bash --login -eo pipefail
-    steps:
-      - restore_cache:
-          key: homebrew
-      - attach_workspace:
-          at: ./
-      - run:
-          command: |
-            xcodebuild -version
-            echo ${password}
-      - run:
-          command: brew update
-      - run:
-          command: brew install Gradle
-  show_ubuntu_whois:
-    machine:
-      docker_layer_caching: true
-    environment:
-      - DOCKER_BUILDKIT: '1'
-    steps:
-      - checkout
-      - run:
-          command: |
-            echo "hello world"
-            echo "{ \"experimental\": true }"  | sudo tee /etc/docker/daemon.json
-            sudo service docker restart
-            docker version
-            docker build -t myimage .
-  splitting-test:
-    docker:
-      - image: circleci/node:11.1.0
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: Run Jest test by splitting
-          command: |
-            npm install
-            TESTFILES=$(circleci tests glob "./src/*.test.js" | circleci tests split --split-by=timings)
-            echo ${TESTFILES}
-            npm run test ${TESTFILES}
-  test:
-    docker:
-      - image: circleci/node:11.1.0
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - persist_to_workspace:
-          root: ~/repo
-          paths:
-            - config/share_key
-      - store_test_results:
-          path: test_results
-      - run: npm run test
+      - installation
