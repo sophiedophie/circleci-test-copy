@@ -10,7 +10,7 @@ orbs:
 jobs:
   installation:
     docker:
-      - image: circleci/windows-server-2019:201908-08
+      - image: circleci/windows-server-2019-vs2019:edge
     steps:
       - run:
           name: install dotnet
