@@ -11,17 +11,17 @@
 #   installation:
 #     docker:
 #       - image: win/vs2019
-#     steps:
-#       - run:
-#           name: install dotnet
-#           command: |
-#             sudo choco install powershell-core
-#             $PSVersionTable
-#       - run:
-#           name: install dotnet
-#           command: |
-#             sudo choco install dotnetcore-sdk
-#             dotnet --info
+    # steps:
+    #   - run:
+    #       name: install dotnet
+    #       command: |
+    #         sudo choco install powershell-core
+    #         $PSVersionTable
+    #   - run:
+    #       name: install dotnet
+    #       command: |
+    #         sudo choco install dotnetcore-sdk
+    #         dotnet --info
 
 # workflows:
 #   version: 2
@@ -40,11 +40,13 @@ jobs:
       name: win/vs2019
       shell: bash.exe
     steps:
-      - checkout
-      - run: ls -lah
       - run:
-          command: ping circleci.com
-          shell: cmd.exe
+          name: install dotnet
+          command: |
+            sudo choco install powershell-core
+            $PSVersionTable
       - run:
-          command: echo 'This is powershell'
-          shell: powershell.exe
+          name: install dotnet
+          command: |
+            sudo choco install dotnetcore-sdk
+            dotnet --info
