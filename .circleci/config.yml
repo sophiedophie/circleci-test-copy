@@ -43,10 +43,10 @@ jobs:
       - run:
           name: install dotnet
           command: |
-            sudo choco install powershell-core
+            choco install powershell-core
             $PSVersionTable
       - run:
           name: install dotnet
           command: |
-            sudo choco install dotnetcore-sdk
+            choco install dotnetcore-sdk
             dotnet --info
