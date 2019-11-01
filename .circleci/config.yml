@@ -44,9 +44,10 @@ jobs:
           name: install dotnet
           command: |
             choco install powershell-core
+            pwsh.exe
             $PSVersionTable
       - run:
           name: install dotnet
           command: |
-            choco install dotnetcore-sdk
+            choco upgrade dotnetcore-sdk
             dotnet --info
