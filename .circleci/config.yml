@@ -44,7 +44,7 @@ jobs:
           name: install powershell 6
           command: |
             choco install powershell-core
-            New-Item -Path C:\Program Files\PowerShell\6.0.0\pwsh.exe -ItemType SymbolicLink -Value C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+            New-Item -Path "C:\Program Files\PowerShell\6.0.0\pwsh.exe" -ItemType SymbolicLink -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
       - run:
           name: check powershell version
           shell: powershell.exe
