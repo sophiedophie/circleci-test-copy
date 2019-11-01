@@ -1,30 +1,50 @@
-version: 2.1
+# version: 2.1
 
-# What I want to be able to do is
-# call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\VsDevCmd.bat\" -host_arch=amd64 -arch=amd64
-# Which works fine on azure pipelines and over ssh
+# # What I want to be able to do is
+# # call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\VsDevCmd.bat\" -host_arch=amd64 -arch=amd64
+# # Which works fine on azure pipelines and over ssh
+
+# orbs:
+#   win: circleci/windows@1.0.0
+
+# jobs:
+#   installation:
+#     docker:
+#       - image: win/vs2019
+#     steps:
+#       - run:
+#           name: install dotnet
+#           command: |
+#             sudo choco install powershell-core
+#             $PSVersionTable
+#       - run:
+#           name: install dotnet
+#           command: |
+#             sudo choco install dotnetcore-sdk
+#             dotnet --info
+
+# workflows:
+#   version: 2
+#   build_and_test_all:
+#     jobs:
+#       - installation
+
+version: 2.1
 
 orbs:
   win: circleci/windows@1.0.0
 
 jobs:
-  installation:
-    docker:
-      - image: win/vs2019
+  build:
+    executor:
+      name: win/vs2019
+      shell: bash.exe
     steps:
+      - checkout
+      - run: ls -lah
       - run:
-          name: install dotnet
-          command: |
-            sudo choco install powershell-core
-            $PSVersionTable
+          command: ping circleci.com
+          shell: cmd.exe
       - run:
-          name: install dotnet
-          command: |
-            sudo choco install dotnetcore-sdk
-            dotnet --info
-
-workflows:
-  version: 2
-  build_and_test_all:
-    jobs:
-      - installation
+          command: echo 'This is powershell'
+          shell: powershell.exe
