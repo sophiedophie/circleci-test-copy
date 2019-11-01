@@ -41,13 +41,19 @@ jobs:
       shell: bash.exe
     steps:
       - run:
-          name: install dotnet
+          name: install powershell 6
           command: |
             choco install powershell-core
-            pwsh.exe
+      - run:
+          name: check powershell version
+          shell: pwsh.exe
+          command: |
             $PSVersionTable
       - run:
           name: install dotnet
           command: |
             choco upgrade dotnetcore-sdk
+      - run:
+          name: check dotnet version
+          command: |
             dotnet --info
