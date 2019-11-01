@@ -46,7 +46,7 @@ jobs:
             choco install powershell-core
       - run:
           name: check powershell version
-          shell: powershell/cmd.exe
+          shell: ../../../../Program Files\PowerShell\6.0.0\pwsh.exe
           command: |
             refreshenv
             $PSVersionTable
