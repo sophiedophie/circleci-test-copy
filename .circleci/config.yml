@@ -40,8 +40,6 @@ jobs:
       name: win/vs2019
       shell: cmd.exe
     steps:
-      - setup_remote_docker: 
-         docker_layer_caching: true
       - run:
           name: install powershell 6
           command: |
