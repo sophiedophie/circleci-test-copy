@@ -50,7 +50,7 @@ jobs:
             echo %PATH%
       - run:
           name: check powershell version
-          shell: "C:\\\\Program Files\\\\PowerShell\\\\6\\\\pwsh.exe"
+          shell: "C:\\\\\\\\Program Files\\\\PowerShell\\\\6\\\\pwsh.exe"
           command: |
             $PSVersionTable.PSVersion
       - run:
