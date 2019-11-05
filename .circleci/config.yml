@@ -48,6 +48,8 @@ jobs:
           name: set PATH
           command: |
             echo %PATH%
+            set PATH="%PATH%C:\Program Files\PowerShell\6\";
+            echo %PATH%
       - run:
           name: check powershell version
           shell: pwsh.exe
