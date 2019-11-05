@@ -47,13 +47,12 @@ jobs:
       - run:
           name: set PATH
           command: |
-            setx /M path "%PATH%;C:\Program Files\PowerShell\6\"
             echo %PATH%
       - run:
           name: check powershell version
-          shell: pwsh.exe
+          shell: C:\Program Files\PowerShell\6\pwsh.exe
           command: |
-            pwsh -v
+            $PSVersionTable.PSVersion
       - run:
           name: install dotnet
           command: |
