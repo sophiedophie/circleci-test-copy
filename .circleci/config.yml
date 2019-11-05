@@ -45,6 +45,7 @@ jobs:
           command: |
             choco install powershell-core
             setx path "C:\Program Files\PowerShell\6;%path%"
+            echo %PATH%
             # New-item -ItemType SymbolicLink -Path "C:\Program Files\PowerShell\6" -Value "pwsh.exe"
             # New-Item -Path "\"  -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
       - run:
