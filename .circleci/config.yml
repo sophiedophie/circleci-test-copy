@@ -38,7 +38,7 @@ jobs:
   build:
     executor:
       name: win/vs2019
-      shell: powershell.exe
+      shell: cmd.exe
     steps:
       - run:
           name: install powershell 6
@@ -48,10 +48,9 @@ jobs:
             # New-Item -Path "\"  -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
       - run:
           name: check powershell version
-          shell: powershell.exe
+          shell: pwsh.exe
           command: |
-            refreshenv
-            $PSVersionTable
+            pwsh -v
       - run:
           name: install dotnet
           command: |
