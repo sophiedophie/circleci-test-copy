@@ -47,8 +47,7 @@ jobs:
       - run:
           name: set PATH
           command: |
-            echo %PATH%
-            set PATH="%PATH%C:\Program Files\PowerShell\6\";
+            setx /M path "%PATH%;C:\Program Files\PowerShell\6\"
             echo %PATH%
       - run:
           name: check powershell version
