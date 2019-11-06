@@ -40,14 +40,10 @@ jobs:
       name: win/vs2019
       shell: powershell.exe
     steps:
-      - run: Add-Type -AssemblyName System.web
-      - run: $raw_password = [System.Web.Security.Membership]::GeneratePassword(42, 10)
-      - run: $password = ConvertTo-SecureString $raw_password -AsPlainText -Force
-      - run: Set-LocalUser -Name "circleci" -Password $password
-      - run: $username = "circleci"
-      - run: $cred = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $password
-      - run: $job = Start-Job -Credential $cred -ScriptBlock { Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All -NoRestart }
-      - run: $job | Receive-Job -Wait
+      - run:
+          name: wtf
+          command: |
+            sh ./test.sh
       
       - run:
           name: ok, delete netfx3
