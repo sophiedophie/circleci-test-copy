@@ -42,7 +42,7 @@ jobs:
     steps:
       - run:
           name: Don't know but installing something
-          command: dism /online /enable-feature /featurename:NetFX3
+          command: dism /online /enable-feature /featurename:NetFX3 /All
       
       - run:
           name: install dependency
