@@ -42,23 +42,26 @@ jobs:
     steps:
       - run:
           name: can we use dism?
-          command: Dism /online /Get-Features
+          command: |
+            Dism /online /Get-Features
+            choco install -y wixtoolset --version 3.11.0.20170506 
+            choco install awscli
       
-      - run:
-          name: ok, delete netfx3
-          command: dism /online /Disable-Feature /FeatureName:NetFx3 /remove
+      # - run:
+      #     name: ok, delete netfx3
+      #     command: dism /online /Disable-Feature /FeatureName:NetFx3 /remove
 
-      - run:
-          name: Don't know but installing something
-          command: dism /online /Enable-Feature /Featurename:NetFX3 /All
+      # - run:
+      #     name: Don't know but installing something
+      #     command: dism /online /Enable-Feature /Featurename:NetFX3 /All
       
-      - run:
-          name: install dependency
-          command: choco install -y wixtoolset --version 3.11.0.20170506 
+      # - run:
+      #     name: install dependency
+      #     command: choco install -y wixtoolset --version 3.11.0.20170506 
 
-      - run:
-          name: choco install awscli
-          command: choco install awscli
+      # - run:
+      #     name: choco install awscli
+      #     command: choco install awscli
 
     # OK just go away this is not working
       # - run:
