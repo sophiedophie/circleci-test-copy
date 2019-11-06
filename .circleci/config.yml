@@ -41,23 +41,36 @@ jobs:
       shell: cmd.exe
     steps:
       - run:
-          name: install powershell 6
-          command: |
-            choco install powershell-core
+        name: Don't know but installing something
+        command: dism /online /enable-feature /featurename:NetFX3
+      
       - run:
-          name: set PATH
-          command: |
-            echo %PATH%
+        name: install dependency
+        command: choco install -y wixtoolset --version 3.11.0.20170506 
+
       - run:
-          name: check powershell version
-          shell: "C:\\\\\\\\Program Files\\\\PowerShell\\\\6\\\\pwsh.exe"
-          command: |
-            $PSVersionTable.PSVersion
-      - run:
-          name: install dotnet
-          command: |
-            choco upgrade dotnetcore-sdk
-      - run:
-          name: check dotnet version
-          command: |
-            dotnet --info
+        name: choco install awscli
+        command: choco install awscli
+
+    # OK just go away this is not working
+      # - run:
+      #     name: install powershell 6
+      #     command: |
+      #       choco install powershell-core
+      # - run:
+      #     name: set PATH
+      #     command: |
+      #       echo %PATH%
+      # - run:
+      #     name: check powershell version
+      #     shell: "%PROGRAMFILES%\PowerShell\6\pwsh.exe"
+      #     command: |
+      #       $PSVersionTable.PSVersion
+      # - run:
+      #     name: install dotnet
+      #     command: |
+      #       choco upgrade dotnetcore-sdk
+      # - run:
+      #     name: check dotnet version
+      #     command: |
+      #       dotnet --info
