@@ -41,8 +41,11 @@ jobs:
       shell: cmd.exe
     steps:
       - run:
+          name: can we use dism?
+          command: Dism /online /Get-Features
+      - run:
           name: Don't know but installing something
-          command: dism /online /enable-feature /featurename:NetFX3 /All
+          command: dism /online /Enable-Feature /Featurename:NetFX3 /All
       
       - run:
           name: install dependency
