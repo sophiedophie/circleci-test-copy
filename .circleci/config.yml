@@ -44,7 +44,7 @@ jobs:
       - run:
           name: wtf
           command: |
-            sh ./src/test.sh
+            sh ./src/test.ps1
       
       - run:
           name: ok, delete netfx3
