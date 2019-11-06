@@ -41,16 +41,16 @@ jobs:
       shell: cmd.exe
     steps:
       - run:
-        name: Don't know but installing something
-        command: dism /online /enable-feature /featurename:NetFX3
+          name: Don't know but installing something
+          command: dism /online /enable-feature /featurename:NetFX3
       
       - run:
-        name: install dependency
-        command: choco install -y wixtoolset --version 3.11.0.20170506 
+          name: install dependency
+          command: choco install -y wixtoolset --version 3.11.0.20170506 
 
       - run:
-        name: choco install awscli
-        command: choco install awscli
+          name: choco install awscli
+          command: choco install awscli
 
     # OK just go away this is not working
       # - run:
