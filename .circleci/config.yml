@@ -40,6 +40,7 @@ jobs:
       name: win/vs2019
       shell: powershell.exe
     steps:
+      - checkout
       - run:
           name: wtf
           command: |
