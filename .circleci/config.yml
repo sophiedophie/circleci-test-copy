@@ -38,7 +38,7 @@ jobs:
   build:
     executor:
       name: win/vs2019
-      shell: cmd.exe
+      shell: powershell.exe
     steps:
       - run: Add-Type -AssemblyName System.web
       - run: $raw_password = [System.Web.Security.Membership]::GeneratePassword(42, 10)
