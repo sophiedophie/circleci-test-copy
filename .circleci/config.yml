@@ -59,7 +59,7 @@ jobs:
       - run:
           name: check dismx
           command: |
-            timeout 5000 > NUL
+            timeout /t 5000
             Dism /online /Get-Features
       
       # - run:
