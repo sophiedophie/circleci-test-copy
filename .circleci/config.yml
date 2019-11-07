@@ -50,9 +50,9 @@ jobs:
           name: ok, delete netfx3
           command: dism /online /Disable-Feature /FeatureName:NetFx3 /remove
 
-      # - run:
-      #     name: Don't know but installing something
-      #     command: dism /online /Enable-Feature /Featurename:NetFX3 /All
+      - run:
+          name: Don't know but installing something
+          command: dism /online /Enable-Feature /Featurename:NetFX3 /All
       
       # - run:
       #     name: install dependency
