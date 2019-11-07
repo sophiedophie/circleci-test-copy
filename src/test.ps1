@@ -7,5 +7,4 @@ $cred = New-Object System.Management.Automation.PSCredential -ArgumentList $user
 $job = Start-Job -Credential $cred -ScriptBlock {
   Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All -NoRestart
 }
-$progresspreference = 'silentlycontinue'
-$job | Receive-Job -Wait
+$job
