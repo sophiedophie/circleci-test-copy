@@ -58,7 +58,9 @@ jobs:
       
       - run:
           name: check dismx
-          command: Dism /online /Get-Features
+          command: |
+            timeout 5000 > NUL
+            Dism /online /Get-Features
       
       # - run:
       #     name: install dependency
