@@ -84,11 +84,11 @@ jobs:
       #     shell: "%PROGRAMFILES%\PowerShell\6\pwsh.exe"
       #     command: |
       #       $PSVersionTable.PSVersion
-      # - run:
-      #     name: install dotnet
-      #     command: |
-      #       choco upgrade dotnetcore-sdk
-      # - run:
-      #     name: check dotnet version
-      #     command: |
-      #       dotnet --info
+      - run:
+          name: install dotnet
+          command: |
+            choco upgrade dotnetcore-sdk
+      - run:
+          name: check dotnet version
+          command: |
+            Dism /online /Get-Features
