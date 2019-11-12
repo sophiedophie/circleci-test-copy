@@ -17,8 +17,13 @@ jobs:
       - checkout
       - run:
           name: store env and echo
-          command: echo $BUILD_COMPLETED
+          command: |
+            echo $BUILD_COMPLETE
+            echo $BUILD_WHAT
+            echo $WTF
           environment:
             BUILD_COMPLETED: true
+            BUILD_WHAT: false
+            WTF: '1'
 
           
