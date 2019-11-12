@@ -18,8 +18,11 @@ jobs:
       - run:
           name: store env and echo
           command: |
+            echo "========"
             echo $BUILD_COMPLETE
+            echo "========"
             echo $BUILD_WHAT
+            echo "========"
             echo $WTF
           environment:
             BUILD_COMPLETED: true
