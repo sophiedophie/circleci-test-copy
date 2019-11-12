@@ -1,8 +1,4 @@
 version: 2.1
-parameters:
-  BUILD_COMPLETED:
-    type: boolean
-    default: true
 workflows:
   version: 2
   test:
@@ -13,6 +9,10 @@ jobs:
     docker:
       - image: circleci/node:11.1.0
     working_directory: ~/repo
+    parameters:
+      BUILD_COMPLETED:
+        type: boolean
+        default: true
     steps:
       - checkout
       - run:
