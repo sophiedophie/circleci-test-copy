@@ -19,7 +19,7 @@ jobs:
           name: store env and echo
           command: |
             echo "========"
-            echo $BUILD_COMPLETE
+            echo $BUILD_COMPLETED
             echo "========"
             echo $BUILD_WHAT
             echo "========"
