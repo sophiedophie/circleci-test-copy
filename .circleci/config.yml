@@ -1,34 +1,3 @@
-# version: 2.1
-
-# # What I want to be able to do is
-# # call \"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\VsDevCmd.bat\" -host_arch=amd64 -arch=amd64
-# # Which works fine on azure pipelines and over ssh
-
-# orbs:
-#   win: circleci/windows@1.0.0
-
-# jobs:
-#   installation:
-#     docker:
-#       - image: win/vs2019
-    # steps:
-    #   - run:
-    #       name: install dotnet
-    #       command: |
-    #         sudo choco install powershell-core
-    #         $PSVersionTable
-    #   - run:
-    #       name: install dotnet
-    #       command: |
-    #         sudo choco install dotnetcore-sdk
-    #         dotnet --info
-
-# workflows:
-#   version: 2
-#   build_and_test_all:
-#     jobs:
-#       - installation
-
 version: 2.1
 
 orbs:
@@ -36,59 +5,20 @@ orbs:
 
 jobs:
   build:
-    executor:
-      name: win/vs2019
-      shell: powershell.exe
+    machine:
+      docker_layer_caching: true
+      image: windows-server-2019-vs2019:edge
+    resource_class: windows.medium
+    shell: powershell.exe
     steps:
       - checkout
       - run:
-          name: wtf
-          command: |
-            Add-Type -AssemblyName System.web
-            $raw_password = [System.Web.Security.Membership]::GeneratePassword(42, 10)
-            $password = ConvertTo-SecureString $raw_password -AsPlainText -Force
-            Set-LocalUser -Name "circleci" -Password $password
-            $username = "circleci"
-            $cred = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $password
-            $job = Start-Job -Credential $cred -ScriptBlock {
-              Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -All -NoRestart
-              dism /online /Enable-Feature /Featurename:NetFX3 /All
-            }
-            $job
-      
-      - run:
           name: check dismx
           command: |
-            timeout 5000
             Dism /online /Get-Features
-      
-      # - run:
-      #     name: install dependency
-      #     command: choco install -y wixtoolset --version 3.11.0.20170506 
-
-      # - run:
-      #     name: choco install awscli
-      #     command: choco install awscli
-
-    # OK just go away this is not working
-      # - run:
-      #     name: install powershell 6
-      #     command: |
-      #       choco install powershell-core
-      # - run:
-      #     name: set PATH
-      #     command: |
-      #       echo %PATH%
-      # - run:
-      #     name: check powershell version
-      #     shell: "%PROGRAMFILES%\PowerShell\6\pwsh.exe"
-      #     command: |
-      #       $PSVersionTable.PSVersion
       - run:
-          name: install dotnet
+          name: check command
           command: |
-            choco upgrade dotnetcore-sdk
-      - run:
-          name: check dotnet version
-          command: |
-            Dism /online /Get-Features
+            dir %windir%\Microsoft.NET\Framework /AD
+            cd %windir%\Microsoft.NET\Framework\v4.0.30319
+            .\MSBuild.exe -version
