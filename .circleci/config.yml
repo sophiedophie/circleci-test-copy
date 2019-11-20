@@ -1,31 +1,36 @@
-version: 2.1
-workflows:
-  version: 2
-  test:
-    jobs:
-      - test
-jobs:
-  test:
+
+version: 2
+executors:
+  node:
     docker:
       - image: circleci/node:11.1.0
-    working_directory: ~/repo
-    parameters:
-      BUILD_COMPLETED:
-        type: boolean
-        default: true
+
+orbs:
+  slack: circleci/slack@3.3.0
+
+jobs:
+  npm_build:
+    executor: node
     steps:
       - checkout
-      - run:
-          name: store env and echo
-          command: |
-            echo "========"
-            echo << parameters.BUILD_COMPLETED >>
-            echo "========"
-            echo $BUILD_WHAT
-            echo "========"
-            echo $WTF
-          environment:
-            BUILD_WHAT: false
-            WTF: '1'
+      - run: npm run build
+  npm_succ:
+    executor: node
+    steps:
+      - run: echo "successful"
+  npm_test:
+    executor: node
+    steps:
+      - checkout
+      - run: npm run test
+      - slack/status:
+          fail_only: true
+          mentions: 'USERID1,USERID2'
+          only_for_branches: only_for_branches
+          webhook: webhook
 
-          
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - npm_test
