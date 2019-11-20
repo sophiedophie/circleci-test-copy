@@ -19,6 +19,4 @@ jobs:
       - run:
           name: check command
           command: |
-            dir %windir%\Microsoft.NET\Framework /AD
-            cd %windir%\Microsoft.NET\Framework\v4.0.30319
-            .\MSBuild.exe -version
+            dir %WINDIR%\Microsoft.Net\Framework\v* /O:-N /B
