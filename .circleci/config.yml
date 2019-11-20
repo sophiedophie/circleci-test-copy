@@ -2,8 +2,11 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-      - image: cimg/node:12.6
+    - image: circleci/postgres:11-alpine
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_DB: evernow_test
+    - image: node:12-alpine
     steps:
       - checkout
       - run: node --version
