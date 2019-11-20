@@ -1,31 +1,10 @@
 version: 2.1
-workflows:
-  version: 2
-  test:
-    jobs:
-      - test
+
 jobs:
-  test:
+  build:
     docker:
-      - image: circleci/node:11.1.0
-    working_directory: ~/repo
-    parameters:
-      BUILD_COMPLETED:
-        type: boolean
-        default: true
+      - image: cimg/node:12.6
     steps:
       - checkout
-      - run:
-          name: store env and echo
-          command: |
-            echo "========"
-            echo << parameters.BUILD_COMPLETED >>
-            echo "========"
-            echo $BUILD_WHAT
-            echo "========"
-            echo $WTF
-          environment:
-            BUILD_WHAT: false
-            WTF: '1'
-
-          
+      - run: node --version
+      - run: npm i
