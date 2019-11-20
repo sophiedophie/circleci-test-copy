@@ -1,7 +1,7 @@
 
 version: 2
 executors:
-  node:
+  node-exe:
     docker:
       - image: circleci/node:11.1.0
 
@@ -10,16 +10,16 @@ orbs:
 
 jobs:
   npm_build:
-    executor: node
+    executor: node-exe
     steps:
       - checkout
       - run: npm run build
   npm_succ:
-    executor: node
+    executor: node-exe
     steps:
       - run: echo "successful"
   npm_test:
-    executor: node
+    executor: node-exe
     steps:
       - checkout
       - run: npm run test
