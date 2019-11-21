@@ -12,4 +12,4 @@ jobs:
     steps:
       - checkout
       - run: node --version
-      - run: echo $timestamp
+      - run: svn co --quiet https://develop.svn.wordpress.org/tags/5.3/tests/phpunit/includes/ /tmp/wordpress-tests-lib/includes
