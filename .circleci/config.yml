@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     environment:
-        TIMESTAMP: $date
+        TIMESTAMP: now
     steps:
       - checkout
       - run: node --version
