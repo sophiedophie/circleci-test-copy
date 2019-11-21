@@ -1,10 +1,4 @@
 version: 2.1
-
-parameters:
-  timestamp:
-    type: datetime
-    default: CURRENT_TIMESTAMP
-
 jobs:
   build:
     docker:
