@@ -1,12 +1,15 @@
 version: 2.1
 
+parameters:
+  timestamp:
+    type: datetime
+    default: CURRENT_TIMESTAMP
+
 jobs:
   build:
     docker:
       - image: circleci/node:latest
-    environment:
-        TIMESTAMP: now
     steps:
       - checkout
       - run: node --version
-      - run: echo $TIMESTAMP
+      - run: echo $timestamp
