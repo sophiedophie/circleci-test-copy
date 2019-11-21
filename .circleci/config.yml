@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:latest
-      environment:
+    environment:
         TIMESTAMP: $date
     steps:
       - checkout
