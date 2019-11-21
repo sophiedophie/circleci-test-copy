@@ -2,12 +2,14 @@ version: 2.1
 
 jobs:
   build:
-    - image: circleci/postgres:11-alpine
+    docker:
+      - image: circleci/postgres:11-alpine
+      - image: node:12-alpine
       environment:
         POSTGRES_USER: root
         POSTGRES_DB: evernow_test
-    - image: node:12-alpine
+        TIMESTAMP: $date
     steps:
       - checkout
       - run: node --version
-      - run: npm i
+      - run: echo $TIMESTAMP
