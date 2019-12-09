@@ -1,31 +1,26 @@
 version: 2.1
 workflows:
   version: 2
-  test:
+  nightly:
+    triggers:
+    - schedule:
+        cron: 30 16 * * *
+        filters:
+          branches:
+            only:
+            - master
     jobs:
-      - test
+    - test
 jobs:
   test:
     docker:
       - image: circleci/node:11.1.0
     working_directory: ~/repo
-    parameters:
-      BUILD_COMPLETED:
-        type: boolean
-        default: true
     steps:
       - checkout
       - run:
           name: store env and echo
           command: |
-            echo "========"
-            echo << parameters.BUILD_COMPLETED >>
-            echo "========"
-            echo $BUILD_WHAT
-            echo "========"
-            echo $WTF
-          environment:
-            BUILD_WHAT: false
-            WTF: '1'
+            echo "hello world"
 
           
