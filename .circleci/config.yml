@@ -7,7 +7,7 @@ jobs:
   build:
     executor:
       name: win/default
-      shell: bash.exe
+      shell: powershell.exe
       size: large
     steps:
       - checkout
