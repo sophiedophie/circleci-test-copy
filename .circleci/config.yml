@@ -7,11 +7,8 @@ jobs:
   build:
     executor:
       name: win/default
-      shell: powershell.exe
+      shell: bash.exe
       size: xlarge
     steps:
       - checkout
-      - run:
-          name: check dismx
-          command: |
-            Dism /online /Get-Features
+      - run: echo "hello"
