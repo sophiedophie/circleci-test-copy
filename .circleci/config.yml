@@ -1,26 +1,17 @@
 version: 2.1
-workflows:
-  version: 2
-  nightly:
-    triggers:
-    - schedule:
-        cron: 33 7 * * *
-        filters:
-          branches:
-            only:
-            - master
-    jobs:
-    - test
+
+orbs:
+  win: circleci/windows@2.2.0
+
 jobs:
-  test:
-    docker:
-      - image: circleci/node:11.1.0
-    working_directory: ~/repo
+  build:
+    executor:
+      name: win/default
+      shell: bash.exe
+      size: large
     steps:
       - checkout
       - run:
-          name: store env and echo
+          name: check dismx
           command: |
-            echo "hello world"
-
-          
+            Dism /online /Get-Features
