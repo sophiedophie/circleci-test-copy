@@ -8,7 +8,7 @@ jobs:
     executor:
       name: win/default
       shell: powershell.exe
-      size: large
+      size: xlarge
     steps:
       - checkout
       - run:
