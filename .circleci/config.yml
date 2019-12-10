@@ -1,22 +1,17 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@1.0.0
+  win: circleci/windows@2.2.0
 
 jobs:
   build:
-    machine:
-      docker_layer_caching: true
-      image: windows-server-2019-vs2019:edge
-    resource_class: windows.medium
-    shell: powershell.exe
+    executor:
+      name: win/default
+      shell: bash.exe
+      size: large
     steps:
       - checkout
       - run:
           name: check dismx
           command: |
             Dism /online /Get-Features
-      - run:
-          name: check command
-          command: |
-            dir %WINDIR%\Microsoft.Net\Framework\v* /O:-N 
