@@ -5,21 +5,22 @@ jobs:
   build:
     executor:
       name: win/vs2019
-      shell: powershell.exe
+      shell: bash
     environment:
       GO111MODULE: \"on\"
     steps:
       - checkout
-      - run:
-          name: Build Tunnel
-          command: |               
-            .\\tunnel\\build.cmd
-      - run: 
-          name: Build Logger
-          command: |
-            cd test/logger
-            nuget install packages.config -OutputDirectory packages
-            C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe -target:library SALogger.cs -reference:.\\packages\\Microsoft.Build.Utilities.Core.16.3.0\\lib\\net472\\Microsoft.Build.Utilities.Core.dll,.\\packages\\Microsoft.Build.Framework.16.3.0\\lib\\net472\\Microsoft.Build.Framework.dll,.\\packages\\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\\lib\\net4\\System.Management.Automation.dll
+      - run: echo "bash?"
+      # - run:
+      #     name: Build Tunnel
+      #     command: |               
+      #       .\\tunnel\\build.cmd
+      # - run: 
+      #     name: Build Logger
+      #     command: |
+      #       cd test/logger
+      #       nuget install packages.config -OutputDirectory packages
+      #       C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe -target:library SALogger.cs -reference:.\\packages\\Microsoft.Build.Utilities.Core.16.3.0\\lib\\net472\\Microsoft.Build.Utilities.Core.dll,.\\packages\\Microsoft.Build.Framework.16.3.0\\lib\\net472\\Microsoft.Build.Framework.dll,.\\packages\\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\\lib\\net4\\System.Management.Automation.dll
 workflows:
   workflow:
     jobs:
