@@ -3,24 +3,25 @@ orbs:
   win: circleci/windows@1.0.0
 jobs:
   build:
-    executor:
-      name: win/vs2019
-      shell: bash
-    environment:
-      GO111MODULE: \"on\"
+    docker:
+      - image: sebastianwebber/sqitch-circleci:1.0.0
+      - image: circleci/postgres:11
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_sqitch_test
     steps:
       - checkout
-      - run: echo "bash?"
-      # - run:
-      #     name: Build Tunnel
-      #     command: |               
-      #       .\\tunnel\\build.cmd
-      # - run: 
-      #     name: Build Logger
-      #     command: |
-      #       cd test/logger
-      #       nuget install packages.config -OutputDirectory packages
-      #       C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe -target:library SALogger.cs -reference:.\\packages\\Microsoft.Build.Utilities.Core.16.3.0\\lib\\net472\\Microsoft.Build.Utilities.Core.dll,.\\packages\\Microsoft.Build.Framework.16.3.0\\lib\\net472\\Microsoft.Build.Framework.dll,.\\packages\\Microsoft.PowerShell.5.ReferenceAssemblies.1.1.0\\lib\\net4\\System.Management.Automation.dll
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: "creating basic schema"
+          command: |
+            psql --echo-all --tuples-only --file=./bin/db-setup.sql 
+          environment:
+            PGHOST: 127.0.0.1
+            PGDATABASE: circle_sqitch_test
+
 workflows:
   workflow:
     jobs:
