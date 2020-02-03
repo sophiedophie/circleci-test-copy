@@ -1,27 +1,12 @@
 version: 2.1
-orbs:
-  win: circleci/windows@1.0.0
 jobs:
   build:
     docker:
-      - image: sebastianwebber/sqitch-circleci:1.0.0
-      - image: circleci/postgres:11
-        environment:
-          POSTGRES_USER: circleci
-          POSTGRES_DB: circle_sqitch_test
+      - image: circleci/node-lts
     steps:
-      - checkout
       - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: "creating basic schema"
-          command: |
-            psql --echo-all --tuples-only --file=bin/dump_test.sql \<< EOF
-          environment:
-            PGHOST: 127.0.0.1
-            PGDATABASE: circle_sqitch_test
-
+          name: source BASH_ENV
+          command: source $BASH_ENV
 workflows:
   workflow:
     jobs:
