@@ -1,3 +1,9 @@
+defaults: &defaults
+  docker:
+      - image: "circleci/node:9.6.1"
+  steps:
+      - run: echo "started"
+
 workflows:
   version: 2
   build_and_deploy:
@@ -12,21 +18,13 @@ workflows:
           requires:
             - build
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
 
 jobs:
   build:
-    docker:
-      - image: "circleci/node:9.6.1"
-    steps:
-      - run:
-          name: "Build"
-          command: echo "Build started"
+    <<: *defaults 
   release_api:
-    docker:
-      - image: "circleci/node:9.6.1"
-    steps:
-      - run:
-          name: "Release"
-          command: echo "Release started"
+    <<: *defaults
