@@ -2,6 +2,9 @@ defaults: &defaults
   docker:
       - image: "circleci/node:9.6.1"
   steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
       - setup_remote_docker:
           docker_layer_caching: true
       - run: echo "started"
@@ -16,14 +19,14 @@ workflows:
               only: master #for tests
             tags: # required since `release_api` has tag filters AND requires `build`
               only: /.*/
-      - release_api:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+      # - release_api:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /^v.*/
 
 jobs:
   build:
