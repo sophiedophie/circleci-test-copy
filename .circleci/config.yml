@@ -6,9 +6,8 @@ workflows:
           filters:
             branches:
               only: master #for tests
-            filters:  # required since `release_api` has tag filters AND requires `build`
-              tags:
-                only: /.*/
+            tags: # required since `release_api` has tag filters AND requires `build`
+              only: /.*/
       - release_api:
           requires:
             - build
