@@ -11,7 +11,7 @@ workflows:
       - build:
           filters:
             branches:
-              only: master #for tests
+              only: master
             tags: # required since `release_api` has tag filters AND requires `build`
               only: /.*/
       - release_api:
