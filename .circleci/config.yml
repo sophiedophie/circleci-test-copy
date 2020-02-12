@@ -21,13 +21,6 @@ jobs:
             && apk del --purge deps \
             && rm /var/cache/apk/*
 
-      - run:
-          name: Check Kubectl
-          no_output_timeout: 15m
-          command: |
-            kubectl version
-            kubectl version --client
-
 workflows:
   version: 2
   infrasructure_builder:
