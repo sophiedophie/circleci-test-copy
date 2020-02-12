@@ -1,155 +1,24 @@
-varsion: 2
+version: 2.1
+
+base_image: &base_image
+  hashicorp/terraform:light
+
+default_config: &default_config
+  docker:
+    - image: *base_image
+
 jobs:
-  file-setting-dev:
-    working_directory: ~/amsui-web
-    docker:
-    - image: circleci/node:10.16.0-stretch
+  apply:
+    <<: *default_config
     steps:
-    - checkout
-    - run:
-        name: make files
-        command: |
-          cd work
-          touch _config.dev.sh
-    - run:
-        name: setup config dev
-        command: |
-          cd work
-          echo 'PROFILE="clp_ams-dev"' >> _config.dev.sh
-          echo "ACCOUNTID=$DEV_ACCOUNTID" >> _config.dev.sh
-          echo 'MAINREGION="ap-northeast-1"' >> _config.dev.sh
-          echo 'SUBREGION="us-west-2"' >> _config.dev.sh
-          echo 'PROFILE_STG="clp_mspdev"' >> _config.dev.sh
-          echo 'APPNAME="amsui"' >> _config.dev.sh
-          echo 'STAGE="dev"' >> _config.dev.sh
-          echo 'AUTHOR="ams-ui"' >> _config.dev.sh
-          echo 'VERSION="00000"' >> _config.dev.sh
-          echo "SLACK_TOKEN=$DEV_SLACK_TOKEN" >> _config.dev.sh
-          echo "BACKLOG_API_KEY=$DEV_BACKLOG_API_KEY" >> _config.dev.sh
-          echo "DATADOG_API_KEY=$DEV_DATADOG_API_KEY" >> _config.dev.sh
-          echo "DATADOG_APP_KEY=$DEV_DATADOG_APP_KEY" >> _config.dev.sh
-          echo "PAGERDUTY_API_KEY=$DEV_PAGERDUTY_API_KEY" >> _config.dev.sh
-          echo "PAGERDUTY_STG_API_KEY=$DEV_PAGERDUTY_STG_API_KEY" >> _config.dev.sh
-          echo "AMSUI_API_ID=$DEV_AMSUI_API_ID" >> _config.dev.sh
-          echo "AMSUI_API_KEY=$DEV_AMSUI_API_KEY" >> _config.dev.sh
-          echo "DP_URL=$DEV_DP_URL" >> _config.dev.sh
-          echo "DP_APIKEY=$DEV_DP_APIKEY" >> _config.dev.sh
-          echo "AMSCORE_PRD_BUCKET=$DEV_AMSCORE_PRD_BUCKET" >> _config.dev.sh
-          echo "AMSCORE_PRD_REGION=$DEV_AMSCORE_PRD_REGION" >> _config.dev.sh
-          echo "AMSCORE_STG_BUCKET=$DEV_AMSCORE_STG_BUCKET" >> _config.dev.sh
-          echo "AMSCORE_STG_REGION=$DEV_AMSCORE_STG_REGION" >> _config.dev.sh
-          echo "AMSCORE_STG_EXTID=$DEV_AMSCORE_STG_EXTID" >> _config.dev.sh
-          echo "AMSCORE_STG_ROLE=$DEV_AMSCORE_STG_ROLE" >> _config.dev.sh
-          echo "AMSCORE_PRD_LAMBDA_ROLE_MAIN=$DEV_AMSCORE_PRD_LAMBDA_ROLE_MAIN" >> _config.dev.sh
-          echo "AMSCORE_PRD_LAMBDA_ROLE_SUB=$DEV_AMSCORE_PRD_LAMBDA_ROLE_SUB" >> _config.dev.sh
-          echo "AMSCORE_SUB_LAMBDA_ROLE_MAIN=$DEV_AMSCORE_SUB_LAMBDA_ROLE_MAIN" >> _config.dev.sh
-          echo "AMSCORE_SUB_LAMBDA_ROLE_SUB=$DEV_AMSCORE_SUB_LAMBDA_ROLE_SUB" >> _config.dev.sh
-          echo "AMSCORE_PRD_WEBHOOK_MAIN=$DEV_AMSCORE_PRD_WEBHOOK_MAIN" >> _config.dev.sh
-          echo "AMSCORE_PRD_WEBHOOK_SUB=$DEV_AMSCORE_PRD_WEBHOOK_SUB" >> _config.dev.sh
-          echo "AMSCORE_SUB_WEBHOOK_MAIN=$DEV_AMSCORE_SUB_WEBHOOK_MAIN" >> _config.dev.sh
-          echo "AMSCORE_SUB_WEBHOOK_SUB=$DEV_AMSCORE_SUB_WEBHOOK_SUB" >> _config.dev.sh
-          echo "AMSCORE_PRD_ACCOUNT_ID=$DEV_AMSCORE_PRD_ACCOUNT_ID" >> _config.dev.sh
-          echo "AMSCORE_SUB_ACCOUNT_ID=$DEV_AMSCORE_SUB_ACCOUNT_ID" >> _config.dev.sh
-          echo "ACTION_KEY=$DEV_ACTION_KEY" >> _config.dev.sh
-          echo 'LOG_KEYWORDS='"START,END,REPORT,[ERROR],[WARN],Except,exited,timed"'' >> _config.dev.sh
-          echo "LOG_KEYWORDS_APIGW='"fail,error,URI:"'" >> _config.dev.sh
-          echo "RESOURCE_BUCKET=$DEV_RESOURCE_BUCKET" >> _config.dev.sh
-          echo "MAIN_BUCKET=$DEV_MAIN_BUCKET" >> _config.dev.sh
-    - persist_to_workspace:
-        root: ./
-        paths:
-        - ./*
-    environment:
-    - CIRCLE_COMPARE_URL: https://github.com/iretsoumu/amsui-web/compare/6504a682954fb62d9a8f955ef8d5f17748b7a1e8...a7fcc081d40ae66a813ed4f8d9c811838fb263f2
-  docker-build-and-setup-test:
-    working_directory: ~/amsui-web
-    machine:
-      docker_layer_caching: true
-    resource_class: large
-    steps:
-    - checkout
-    - attach_workspace:
-        at: ./
-    - run:
-        name: docker build
-        command: sh build_image.sh
-    - run:
-        name: docker run
-        command: |
-          docker run -d --name amsui -v ~/.aws:/root/.aws -v `pwd`/work:/opt/ams/work -e AWS_DEFAULT_REGION=ap-northeast-1 -p 8080:8080 amsui/web /bin/bash -c "while true; do echo hello world; sleep 1; done"
-          docker ps
-    - run:
-        name: npm install
-        command: docker exec amsui /bin/bash -c "cd amsui && ls && npm install"
-    - run:
-        name: amsui setting
-        command: |
-          docker exec amsui /bin/bash -c "mkdir amsui/node_modules/@types/mockstorage"
-          docker exec amsui /bin/bash -c "cp -p amsui/node_modules/mockstorage/dist/index.d.ts amsui/node_modules/@types/mockstorage/index.d.ts"
-          docker exec amsui /bin/bash -c "mkdir amsui/src/assets/tmp"
-          docker exec amsui /bin/bash -c "touch amsui/src/assets/tmp/tmp"
-          docker exec amsui /bin/bash -c "cd amsui/src/assets/ && ls -a"
-          docker exec amsui /bin/bash -c "cd amsui/node_modules/@types/mockstorage && ls -a"
-          docker exec amsui /bin/bash -c "sh _setup_define.sh dev"
-    - run:
-        name: npm test
-        command: docker exec amsui /bin/bash -c "cd amsui && ls && npm run test:unit"
-    environment:
-    - CIRCLE_COMPARE_URL: https://github.com/iretsoumu/amsui-web/compare/6504a682954fb62d9a8f955ef8d5f17748b7a1e8...a7fcc081d40ae66a813ed4f8d9c811838fb263f2
-  npm-and-setup-test:
-    working_directory: ~/amsui-web
-    docker:
-    - image: circleci/node:9.11.2-stretch
-    steps:
-    - restore_cache:
-        keys:
-        - source-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-        - source-v1-{{ .Branch }}-
-    - checkout
-    - attach_workspace:
-        at: ./
-    - run:
-        name: 依存パッケージインストール
-        command: |
-          sudo npm install -g @vue/cli
-          sudo npm set strict-ssl false
-          git config --global http.sslVerify false
-          echo "alias ll='ls -la'" >> $BASH_ENV
-    - run:
-        name: npm install
-        command: |
-          cd /amsui-web/work/amsui
-          sudo npm install
-    - run:
-        name: amsui setting
-        command: |
-          cd /amsui-web/work/amsui
-          mkdir node_modules/@types/mockstorage
-          cp -p node_modules/mockstorage/dist/index.d.ts node_modules/@types/mockstorage/index.d.ts
-          mkdir src/assets/tmp
-          touch src/assets/tmp/tmp
-          cd /amsui-web/work
-          sh _setup_define.sh dev
-    - run:
-        name: npm test
-        command: |
-          cd /amsui-web/work/amsui
-          sudo npm run test:unit
-    - save_cache:
-        keys: source-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-        paths:
-        - /usr/local/lib/node_modules/@vue/cli/node_modules
-        - /amsui-web/work/amsui/node_modules
-    environment:
-    - CIRCLE_COMPARE_URL: https://github.com/iretsoumu/amsui-web/compare/6504a682954fb62d9a8f955ef8d5f17748b7a1e8...a7fcc081d40ae66a813ed4f8d9c811838fb263f2
+      - run:
+          name: Check Kubectl
+          no_output_timeout: 15m
+          command: |
+            kubectl version
+
 workflows:
   version: 2
-  build-deploy:
+  infrasructure_builder:
     jobs:
-    - file-setting-dev
-    - docker-build-and-setup-test:
-        requires:
-        - file-setting-dev
-    - npm-and-setup-test:
-        requires:
-        - file-setting-dev
+      - apply
