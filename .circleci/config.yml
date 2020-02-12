@@ -12,10 +12,18 @@ jobs:
     <<: *default_config
     steps:
       - run:
+          name: Install Kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - run:
           name: Check Kubectl
           no_output_timeout: 15m
           command: |
             kubectl version
+            kubectl version --client
 
 workflows:
   version: 2
