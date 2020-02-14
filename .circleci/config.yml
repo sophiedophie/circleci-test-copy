@@ -16,9 +16,20 @@ jobs:
           command: |
             echo << pipeline.git.base_revision >>
             echo << pipeline.git.revision >>
+  next-apply:
+    <<: *default_config
+    steps:
+      - run:
+          name: next
+          command: |
+            echo "hello"
 
 workflows:
   version: 2
   infrasructure_builder:
     jobs:
       - apply
+      - next-apply
+          type: approval
+          requires:
+            - apply
