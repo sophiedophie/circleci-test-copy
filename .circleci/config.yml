@@ -29,7 +29,7 @@ workflows:
   infrasructure_builder:
     jobs:
       - apply
-      - next-apply
+      - next-apply:
           type: approval
           requires:
             - apply
