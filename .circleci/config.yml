@@ -11,25 +11,25 @@ jobs:
   apply:
     <<: *default_config
     steps:
-      - run:
-          name: Show pipeline.git
-          command: |
-            echo << pipeline.git.base_revision >>
-            echo << pipeline.git.revision >>
-  next-apply:
+      - checkout
+      - run: touch hello.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  attach_applied_workspace:
     <<: *default_config
     steps:
-      - run:
-          name: next
-          command: |
-            echo "hello"
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: ls
 
 workflows:
   version: 2
   infrasructure_builder:
     jobs:
       - apply
-      - next-apply:
-          type: approval
+      - attach_applied_workspace:
           requires:
             - apply
