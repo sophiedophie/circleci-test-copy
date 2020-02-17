@@ -23,7 +23,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: ls
+      - run: ls -a
+      - run: pwd
 
 workflows:
   version: 2
