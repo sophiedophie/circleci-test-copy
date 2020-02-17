@@ -23,6 +23,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: ls -a
       - run: pwd
 
