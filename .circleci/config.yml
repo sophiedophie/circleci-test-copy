@@ -1,38 +1,13 @@
 version: 2.1
 
-base_image: &base_image
-  circleci/ruby:2.4-node
-
-default_config: &default_config
-  docker:
-    - image: *base_image
-
 jobs:
-  apply:
-    <<: *default_config
+  build:
+    machine: true
     steps:
-      - checkout
-      - run: touch hello.txt
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  attach_applied_workspace:
-    <<: *default_config
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: ls -a
-      - run: pwd
+      - run: docker version
+
 
 workflows:
-  version: 2
-  infrasructure_builder:
+  not_valid:
     jobs:
-      - apply
-      - attach_applied_workspace:
-          requires:
-            - apply
+      - build
