@@ -14,7 +14,6 @@ jobs:
 
     steps:
       - checkout
-      - run: ls /root
       - persist_to_workspace:
           root: /root
           paths:
