@@ -1,3 +1,4 @@
+
 version: 2.1
 
 base_image: &base_image
@@ -8,17 +9,31 @@ default_config: &default_config
     - image: *base_image
 
 jobs:
-  apply:
+  persist-workspace:
+    <<: *default_config
+
+    steps:
+      - checkout
+      - run: echo 'persist-workspace'
+      - persist_to_workspace:
+          root: /root
+          paths:
+          - .
+
+  attach-workspace:
     <<: *default_config
     steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
-          name: Show pipeline.git
-          command: |
-            echo << pipeline.git.base_revision >>
-            echo << pipeline.git.revision >>
+          name: check workspace
+          command: ls /tmp/workspace
 
 workflows:
-  version: 2
-  infrasructure_builder:
+  test-workspace:
     jobs:
-      - apply
+      - persist-workspace
+      - attach-workspace:
+          requires:
+            - persist-workspace
