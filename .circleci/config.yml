@@ -9,30 +9,15 @@ default_config: &default_config
     - image: *base_image
 
 jobs:
-  persist-workspace:
+  build:
     <<: *default_config
 
     steps:
       - checkout
-      - persist_to_workspace:
-          root: /root
-          paths:
-          - workspace/test
+      - run: echo ${CIRCLECI_PULL_REQUEST}
 
-  attach-workspace:
-    <<: *default_config
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: check workspace
-          command: ls /tmp/workspace
 
 workflows:
-  test-workspace:
+  test-env:
     jobs:
-      - persist-workspace
-      - attach-workspace:
-          requires:
-            - persist-workspace
+      - build
