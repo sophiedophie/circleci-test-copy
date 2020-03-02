@@ -11,17 +11,44 @@ jobs:
     steps:
       - checkout
       - run:
-          name: docker build
-          command: sudo docker build . -t 'sophie:test'
+          name: create a file
+          command: echo 'hello world' > sophie.txt
       - run:
-          name: docker build done
-          command: sudo docker images
-      # - persist_to_workspace:
-      #     root: /root
-      #     paths:
-      #     - workspace/test
+          name: docker build
+          command: |
+            sudo docker build . -t 'sophie:test'
+            sudo docker images
+      - run:
+          name: docker save
+          command: |
+            sudo docker save sophie > sophie.tar
+            ls -sh sophie.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+          - .
+  
+  load-docker:
+    <<: *default_config
+
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: check workspace attached
+          command: |
+            ls
+            sudo docker images
+      - run:
+          name: docker save
+          command: |
+            sudo docker save --input sophie.tar
+            sudo docker images
 
 workflows:
   test-workspace:
     jobs:
       - save-docker
+      - load-docker:
+          requires:
+            - save-docker
