@@ -1,8 +1,13 @@
 
 version: 2.1
 
+parameters:
+  RUBY_VERSION:
+    type: string
+    default: "2.4"
+
 base_image: &base_image
-  circleci/ruby:2.4-node
+  circleci/ruby:${RUBY_VERSION}-node
 
 default_config: &default_config
   docker:
