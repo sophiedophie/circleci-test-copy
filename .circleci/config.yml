@@ -40,9 +40,9 @@ jobs:
             ls
             sudo docker images
       - run:
-          name: docker save
+          name: docker load
           command: |
-            sudo docker save --input sophie.tar
+            sudo docker load --input sophie.tar
             sudo docker images
 
 workflows:
