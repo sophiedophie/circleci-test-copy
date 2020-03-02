@@ -1,38 +1,27 @@
 
 version: 2.1
 
-base_image: &base_image
-  circleci/ruby:2.4-node
-
 default_config: &default_config
-  docker:
-    - image: *base_image
+  machine: true
 
 jobs:
-  persist-workspace:
+  save-docker:
     <<: *default_config
 
     steps:
       - checkout
-      - persist_to_workspace:
-          root: /root
-          paths:
-          - workspace/test
-
-  attach-workspace:
-    <<: *default_config
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
       - run:
-          name: check workspace
-          command: ls /tmp/workspace
+          name: docker build
+          command: sudo docker build . -t 'sophie:test' -o .
+      - run:
+          name: docker build done
+          command: sudo docker images
+      # - persist_to_workspace:
+      #     root: /root
+      #     paths:
+      #     - workspace/test
 
 workflows:
   test-workspace:
     jobs:
-      - persist-workspace
-      - attach-workspace:
-          requires:
-            - persist-workspace
+      - save-docker
