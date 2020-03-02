@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: docker build
-          command: sudo docker build . -t 'sophie:test' -o .
+          command: sudo docker build . -t 'sophie:test'
       - run:
           name: docker build done
           command: sudo docker images
