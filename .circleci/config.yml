@@ -1,38 +1,21 @@
-
 version: 2.1
-
-base_image: &base_image
-  circleci/ruby:2.4-node
-
-default_config: &default_config
-  docker:
-    - image: *base_image
-
-jobs:
-  persist-workspace:
-    <<: *default_config
-
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: /root
-          paths:
-          - workspace/test
-
-  attach-workspace:
-    <<: *default_config
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: check workspace
-          command: ls /tmp/workspace
-
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.3
+  aws-ecs: circleci/aws-ecs@0.0.6
 workflows:
-  test-workspace:
+  build-and-deploy:
     jobs:
-      - persist-workspace
-      - attach-workspace:
+      - aws-ecr/build_and_push_image:
+          context: aws
+          account-url: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          region: "${AWS_DEFAULT_REGION}"
+          tag: "${CIRCLE_SHA1}"
+      - aws-ecs/deploy-service-update:
           requires:
-            - persist-workspace
+            - aws-ecr/build_and_push_image
+          context: aws
+          aws-region: ${AWS_DEFAULT_REGION}
+          family: "demo-app-nginx"
+          cluster-name: "demo-cluster"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
