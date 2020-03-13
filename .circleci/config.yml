@@ -5,7 +5,7 @@ jobs:
   build:
     executor:
       name: win/vs2019
-      shell: powershell.exe
+      shell: bash.exe
     environment:
       GO111MODULE: \"on\"
     steps:
