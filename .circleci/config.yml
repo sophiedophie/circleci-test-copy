@@ -10,7 +10,7 @@ jobs:
       GO111MODULE: \"on\"
     steps:
       - checkout
-      - run: echo "bash?"
+      - run: echo "please show this instead of bash?"
 workflows:
   workflow:
     jobs:
